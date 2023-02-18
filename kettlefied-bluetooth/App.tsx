@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 import DeviceModal from './components/DeviceConnectionModal';
 import useBLE from './useBLE';
 
