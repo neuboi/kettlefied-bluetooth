@@ -10,6 +10,10 @@ export default function App() {
     requestPermissions,
     scanForPeripherals,
     allDevice,
+    connectedDevice,
+    connectToDevice,
+    heartRate,
+    disconectFromDevice
   } = useBLE();
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -32,20 +36,33 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      {/* <Text>Open up App.tsx to start working on your app!</Text> */}
+      <View>
+        {connectedDevice ? (
+          <>
+            <Text>Connected to Kettlefied!: Your Heart Rate Is:</Text>
+            <Text> {heartRate} bpm</Text>
+          </>
+        ) : (
+          <Text>
+            Please connect to a Kettlefied Device!
+          </Text>
+        )}
+      </View>
+
 
 
       <TouchableOpacity
-        onPress={openModal}
+        onPress={connectedDevice ? disconectFromDevice : openModal}
       >
-        <Text>
-          {"Connect"}
+        <Text style={styles.ctaButton}>
+          {connectedDevice ? "Disconnect" : "Connect"}
         </Text>
       </TouchableOpacity>
       <DeviceModal
         closeModal={hideModal}
         visible={isModalVisible}
-        connectToPeripheral={() => {}}
+        connectToPeripheral={connectToDevice}
         devices={allDevice}
       />
       <StatusBar style="auto" />
@@ -59,5 +76,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  ctaButton: {
+    backgroundColor: "#FF6060",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50,
+    marginHorizontal: 20,
+    marginBottom: 5,
+    borderRadius: 8,
+  },
+  modalFlatlistContiner: {
+    flex: 1,
+    justifyContent: "center",
   },
 });
