@@ -1,94 +1,106 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native"
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import DeviceModal from './components/DeviceConnectionModal';
 import useBLE from './useBLE';
 
+import HomePage from './components/Home';
+import Taskbar from './components/Taskbar';
+import LeaderboardPage from './components/Leaderboard';
+import Header from './components/Header';
+import WorkoutOngoingPage from './components/WorkoutOngoing';
+
+const Stack = createNativeStackNavigator();
+
 export default function App() {
-
-  const {
-    requestPermissions,
-    scanForPeripherals,
-    allDevice,
-    connectedDevice,
-    connectToDevice,
-    heartRate,
-    disconectFromDevice
-  } = useBLE();
-
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
-  const hideModal = () => {
-    setIsModalVisible(false);
-  };
-
-  const openModal = async () => {
-    scanForDevices();
-    setIsModalVisible(true);
-  };
-
-  const scanForDevices = async () => {
-    const isPermissionsEnabled = await requestPermissions();
-    if (isPermissionsEnabled) {
-      scanForPeripherals();
-    }
-  }
+    
 
   return (
-    <View style={styles.container}>
-      {/* <Text>Open up App.tsx to start working on your app!</Text> */}
-      <View>
-        {connectedDevice ? (
-          <>
-            <Text>Connected to Kettlefied!: Your Heart Rate Is:</Text>
-            <Text> {heartRate} bpm</Text>
-          </>
-        ) : (
-          <Text>
-            Please connect to a Kettlefied Device!
-          </Text>
-        )}
-      </View>
+    // <View style={styles.container}>
+    //   <Text>Open up App.tsx to start working on your app!</Text>
+    // </View>
 
+    <View style={{ flex: 1 }}>
+      <NavigationContainer>
 
+        {/* Header */}
+        <View style={styles.header}>
+          <Header></Header>
+        </View>
 
-      <TouchableOpacity
-        onPress={connectedDevice ? disconectFromDevice : openModal}
-      >
-        <Text style={styles.ctaButton}>
-          {connectedDevice ? "Disconnect" : "Connect"}
-        </Text>
-      </TouchableOpacity>
-      <DeviceModal
-        closeModal={hideModal}
-        visible={isModalVisible}
-        connectToPeripheral={connectToDevice}
-        devices={allDevice}
-      />
-      <StatusBar style="auto" />
+        <Stack.Navigator initialRouteName='Home' screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Home" component={HomePage}/>
+           <Stack.Screen name="Leaderboard" component={LeaderboardPage}/>
+           <Stack.Screen name="WorkoutOngoing" component={WorkoutOngoingPage}/>
+
+          {/*<Stack.Screen name="Stats" component={StatsPage}/>
+          <Stack.Screen name="Calendar" component={Calendar}/>
+
+          <Stack.Screen name="WorkoutOptions" component={WorkoutPage}/>
+          <Stack.Screen name="WorkoutDescription" component={WorkoutDescriptionPage}/>
+          <Stack.Screen name="WorkoutOngoing" component={WorkoutOngoingPage}/>
+
+          <Stack.Screen name="About" component={AboutPage}/> */}
+
+        </Stack.Navigator>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+            <Taskbar></Taskbar>
+        </View>
+
+      </NavigationContainer>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ctaButton: {
-    backgroundColor: "#FF6060",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 50,
-    marginHorizontal: 20,
-    marginBottom: 5,
-    borderRadius: 8,
-  },
-  modalFlatlistContiner: {
-    flex: 1,
-    justifyContent: "center",
-  },
-});
+    container: {
+      flex: 1,
+      backgroundColor: '#ffffff',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    text: {
+      color: "#fff",
+      fontSize: 20,
+    },
+    image: {
+      borderRadius: 18,
+    },
+    imageContainer: {
+      margin: 12
+    },
+    Button: {
+      padding: 100
+    },
+    footer: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      padding: 20,
+      alignItems: 'center',
+      backgroundColor: 'white',
+      borderTopColor: 'lightgrey',
+      borderTopWidth: 2
+    },
+    header: {
+      backgroundColor: 'white',
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingHorizontal: 15,
+      borderBottomColor: 'lightgrey',
+      borderBottomWidth: 2,
+      paddingTop: 15,
+  
+    },
+    footerText: {
+      fontSize: 20,
+      color: '#fff'
+    },
+  });
