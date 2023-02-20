@@ -14,6 +14,33 @@ import useBLE from '../useBLE';
 export default function Taskbar() {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
+    const {
+        requestPermissions,
+        scanForPeripherals,
+        allDevice,
+        connectedDevice,
+        connectToDevice,
+        heartRate,
+        disconectFromDevice
+      } = useBLE();
+    
+      const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+    
+      const hideModal = () => {
+        setIsModalVisible(false);
+      };
+    
+      const openModal = async () => {
+        scanForDevices();
+        setIsModalVisible(true);
+      };
+    
+      const scanForDevices = async () => {
+        const isPermissionsEnabled = await requestPermissions();
+        if (isPermissionsEnabled) {
+          scanForPeripherals();
+        }
+      }
 
     return (
     <View style={styles.taskbarContainer}>
@@ -27,12 +54,12 @@ export default function Taskbar() {
 
       <TouchableOpacity
         style={styles.taskbarButton}
-        onPress={() => navigation.navigate("WorkoutOngoing")}
+        onPress={() => navigation.navigate("Leaderboard")}
       >
         <Ionicons name="md-people" size={32} />
       </TouchableOpacity>
 
-    {/* 
+      
       <TouchableOpacity
         style={styles.taskbarButton}
         onPress={() => navigation.navigate('Stats')}
@@ -40,13 +67,53 @@ export default function Taskbar() {
         <Ionicons name="md-settings" size={32} />
       </TouchableOpacity>
 
-
       <TouchableOpacity
         style={styles.taskbarButton}
         onPress={() => navigation.navigate('WorkoutOptions')}
       >
         <Ionicons name="md-heart" size={32} />
-      </TouchableOpacity> */}
+      </TouchableOpacity> 
+
+      
+      <View>
+        {connectedDevice ? (
+        <>
+            <Text>{heartRate}</Text>                    
+            {/* <Text>Connected to Kettlefied!: Your Heart Rate Is:</Text>
+            <Text> {heartRate} bpm</Text> */}
+            <TouchableOpacity
+            style={styles.taskbarButton}
+            onPress={disconectFromDevice}
+            >
+                <Ionicons name="md-bluetooth" size={32} />
+            </TouchableOpacity>
+        </>
+        ) : (
+            // <Text>D</Text>
+            <TouchableOpacity
+            style={styles.taskbarButton}
+            onPress={openModal}
+            >
+                <Ionicons name="md-bluetooth" size={32} />
+            </TouchableOpacity>
+        )}
+      </View>
+
+      <DeviceModal
+          closeModal={hideModal}
+          visible={isModalVisible}
+          connectToPeripheral={connectToDevice}
+          devices={allDevice}
+      />
+
+      <TouchableOpacity
+        style={styles.taskbarButton}
+        onPress={() => navigation.navigate("AboutPage")}
+      >
+        <Ionicons name="md-settings" size={32} />
+      </TouchableOpacity>
+
+
 
     </View>
   );

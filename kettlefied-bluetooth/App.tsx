@@ -12,6 +12,9 @@ import Taskbar from './components/Taskbar';
 import LeaderboardPage from './components/Leaderboard';
 import Header from './components/Header';
 import WorkoutOngoingPage from './components/WorkoutOngoing';
+import AboutPage from './components/About';
+import StatsPage from './components/Stats';
+import WorkoutOptionsPage from './components/Workout';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,16 +29,14 @@ export default function App() {
     <View style={{ flex: 1 }}>
       <NavigationContainer>
 
-        {/* Header */}
-        <View style={styles.header}>
-          <Header></Header>
-        </View>
-
         <Stack.Navigator initialRouteName='Home' screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={HomePage}/>
            <Stack.Screen name="Leaderboard" component={LeaderboardPage}/>
            <Stack.Screen name="WorkoutOngoing" component={WorkoutOngoingPage}/>
-
+           <Stack.Screen name="AboutPage" component={AboutPage}/>
+           <Stack.Screen name="Stats" component={StatsPage}/>
+           <Stack.Screen name="WorkoutOptions" component={WorkoutOptionsPage}/>
+           
           {/*<Stack.Screen name="Stats" component={StatsPage}/>
           <Stack.Screen name="Calendar" component={Calendar}/>
 
@@ -43,7 +44,7 @@ export default function App() {
           <Stack.Screen name="WorkoutDescription" component={WorkoutDescriptionPage}/>
           <Stack.Screen name="WorkoutOngoing" component={WorkoutOngoingPage}/>
 
-          <Stack.Screen name="About" component={AboutPage}/> */}
+           */}
 
         </Stack.Navigator>
 

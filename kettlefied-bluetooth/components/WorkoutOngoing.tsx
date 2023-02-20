@@ -148,19 +148,21 @@ export default function WorkoutOngoingPage () {
 
   return (
     <View style={styles.container}>
-        <View>
-          <View style={styles.profile}>
-            <Text style={styles.headerText}> 
-              {text} 
-            </Text>
-            <View style={[styles.progressBarOuter, {width: progressBarSize}]}>
-              <View style={[styles.progressBarInner, {width: progress}]}/>
+          <View style={styles.halfView}>
+            <View style={styles.profile}>
+              <Text style={styles.headerText}> 
+                {text} 
+              </Text>
+              <View style={[styles.progressBarOuter, {width: progressBarSize}]}>
+                <View style={[styles.progressBarInner, {width: progress}]}/>
+              </View>
             </View>
+          </View>
+          <View style={styles.halfView}>
             <Text style={styles.headerText}> 
               {workouttext} 
             </Text>
           </View>
-        </View>
         {/* <View style={styles.container}>
           <View style={style.accelerometerDataContainer}>
             <Text style={style.text}>Accelerometer is Active</Text>
@@ -175,6 +177,17 @@ export default function WorkoutOngoingPage () {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  halfView: {
+    marginHorizontal: 20,
+    marginVertical: 25
+  },
   headerText: {
     color: 'black',
     fontWeight: 'bold',
@@ -186,12 +199,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   text: {
     color: "#fff",

@@ -1,41 +1,50 @@
 import { StyleSheet, View, Pressable, TouchableOpacity, Text, FlatList, Button } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from "@react-navigation/native"
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import DeviceModal from './DeviceConnectionModal';
+
+import { useNavigation, NavigationContainer, ParamListBase} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 import useBLE from '../useBLE';
+
+const data = [
+  { key: 'My Stats', workout: '' },
+  { key: 'Most Recent Workout', workout: '' },
+
+];
+
 export default function HomePage() {
+    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
     {/*https://www.flaticon.com/free-icon/kettlebell_8205418?term=kettlebell&page=1&position=9&origin=tag&related_id=8205418*/}
     const PlaceholderImage = require('../assets/user_icon.png');
     
+    const renderItem = ({ item }:any) => {
+      const n = item.workout
+      return (
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(n)}>
+          <Ionicons name="md-settings" size={32} />
+          <View style={styles.textContainer}>
+            <Text style={styles.buttonText}>{item.key}</Text>
+          </View>
+      </TouchableOpacity>
+      );
+    };
+
     return (
         <View style={styles.container}>
-          <View>
+          <View style={styles.halfView}>
             <View style={styles.profile}>
               <Ionicons name="md-people" size={128} />
               <Text style={styles.headerText}>Welcome Stephen!</Text>
             </View>
-            <TouchableOpacity style={styles.button}>
-              <Ionicons name="md-settings" size={32} />
-              <View style={styles.textContainer}>
-                <Text style={styles.buttonText}>My Feed</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Ionicons name="md-settings" size={32} />
-              <View style={styles.textContainer}>
-                <Text style={styles.buttonText}>My Stats</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Ionicons name="md-settings" size={32} />
-              <View style={styles.textContainer}>
-                <Text style={styles.buttonText}>Most Recent Workout</Text>
-              </View>
-            </TouchableOpacity>
-
+          </View>
+          <View style={styles.halfView}>
+            <FlatList
+              data={data}
+              renderItem={renderItem}
+              contentContainerStyle={styles.list}
+            />
           </View>
         </View>
         
@@ -43,11 +52,17 @@ export default function HomePage() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  halfView: {
+    marginHorizontal: 20,
+    marginVertical: 25
+  },
     button: {
       width: 350,
       height: 110,

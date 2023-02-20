@@ -1,21 +1,30 @@
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Pressable, Text, Button, FlatList, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
-const data = [
-    { key: 'Button 1', desc: 'This is a brief description of each workout' },
-    { key: 'Button 2', desc: 'This is a brief description of each workout' },
-    { key: 'Button 3', desc: 'This is a brief description of each workout' },
-    { key: 'Button 4', desc: 'This is a brief description of each workout' }
-  
-  ];
+import { useNavigation, NavigationContainer, ParamListBase} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-  export default function LeaderboardPage({navigation}: any) {
+const data = [
+  { key: 'Button 1', desc: 'This is a brief description of each workout', workout: '' },
+  { key: 'Button 2', desc: 'This is a brief description of each workout', workout: '' },
+  { key: 'Button 3', desc: 'This is a brief description of each workout', workout: '' },
+  { key: 'Button 4', desc: 'This is a brief description of each workout', workout: '' }
+
+];
+
+
+export default function LeaderboardPage() {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
     {/*https://www.flaticon.com/free-icon/user_1077114?term=user&page=1&position=3&origin=search&related_id=1077114*/}
     //const PlaceholderImage = require('./assets/kettleballicon-flaticon.png');
 
     const renderItem = ({ item }: any) => {
+      const n = item.workout
       return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(n)}>
           <Ionicons name="md-settings" size={32} />
           <View style={styles.textContainer}>
             <Text style={styles.buttonText}>{item.key}</Text>
@@ -29,14 +38,18 @@ const data = [
 
     return (
       <View style={styles.container}>
-        <Text style={styles.headerText}>All KettleFied Workouts</Text>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          contentContainerStyle={styles.list}
-        />
-        <View style={styles.space}>
-          <Text></Text>
+        <View style={styles.halfView}>
+          <Text style={styles.headerText}>All KettleFied Workouts</Text>
+        </View>
+        <View style={styles.halfView}>
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            contentContainerStyle={styles.list}
+          />
+          <View style={styles.space}>
+            <Text></Text>
+          </View>
         </View>
       </View>
     )
@@ -44,10 +57,15 @@ const data = [
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
+    halfView: {
+      marginHorizontal: 20,
+      marginVertical: 25
     },
     header: {
         fontSize: 25,
@@ -76,6 +94,14 @@ const styles = StyleSheet.create({
     Button: {
       padding: 100
     },
+
+    buttonText: {
+        color: "white",
+        fontWeight: "bold",
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center'
+      },
     buttonContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -99,7 +125,7 @@ const styles = StyleSheet.create({
       },
       button: {
         width: 350,
-        height: 310,
+        height: 210,
         marginVertical: 5,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -114,10 +140,6 @@ const styles = StyleSheet.create({
       textContainer: {
         width: 220,
         backgroundColor: '#fff',
-      },
-      buttonText: {
-        fontSize: 20,
-        color: 'grey'
       },
       
       list: {
