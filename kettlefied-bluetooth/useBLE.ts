@@ -2,8 +2,8 @@ import * as ExpoDevice from "expo-device"
 
 import base64 from "react-native-base64";
 
-const UUID = "";
-const CHARACTERISTIC = "";
+const UUID = "0xFFE0";
+const CHARACTERISTIC = "0xFFE1";
 
 import { useMemo, useState } from  "react";
 import { PermissionsAndroid, Platform } from "react-native";
@@ -92,7 +92,7 @@ function useBLE(): BluetoothLowEnergyApi {
             console.log(error);
 
         }
-        if (device && device.name != null) {
+        if (device && device.name == "HMSoft") {
             console.log("Device: " , device?.name)
             setAllDevices((prevState: Device[]) => {
             if (!isDuplicateDevice(prevState, device)) {
@@ -119,19 +119,24 @@ function useBLE(): BluetoothLowEnergyApi {
         error: BleError | null,
         characteristic: Characteristic | null
         ) => {
+            console.log("Running onUpdate")
+
             if (error) {
+                console.log("Error Detected")
+                console.log(characteristic?.value)
+
                 console.log(error);
                 return
             } else if (!characteristic?.value) {
                 console.log("No Data Recieved")
                 return
             }
-
+            console.log("data")
             // DATA COLLECTION ---------------------------------------
 
                 const rawData = base64.decode(characteristic.value)
                 let innerHeartRate: number = -1;
-
+                console.log(rawData)
                 const firstbitVal: number = Number(rawData) & 0x01
 
                 if(firstbitVal === 0) {
@@ -149,11 +154,15 @@ function useBLE(): BluetoothLowEnergyApi {
 
     const startStreamingData = async(device: Device) => {
         if(device) {
+            console.log("Device Found and Attempting Streamning")
+            console.log(device.name)
+            console.log(device.id)
             device.monitorCharacteristicForService(
-                UUID,
-                CHARACTERISTIC,
+                "0xFFE0",
+                "0xAAA0",
                 onUpdate
             )
+
         } else {
             console.log("No Device Connected")
         }

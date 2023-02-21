@@ -56,7 +56,7 @@ export default function Taskbar() {
         style={styles.taskbarButton}
         onPress={() => navigation.navigate("Leaderboard")}
       >
-        <Ionicons name="md-people" size={32} />
+        <Ionicons name="md-list-outline" size={32} />
       </TouchableOpacity>
 
       
@@ -64,28 +64,28 @@ export default function Taskbar() {
         style={styles.taskbarButton}
         onPress={() => navigation.navigate('Stats')}
       >
-        <Ionicons name="md-settings" size={32} />
+        <Ionicons name="md-star" size={32} />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.taskbarButton}
         onPress={() => navigation.navigate('WorkoutOptions')}
       >
-        <Ionicons name="md-heart" size={32} />
+        <Ionicons name="md-barbell-outline" size={32} />
       </TouchableOpacity> 
-
+      
       
       <View>
         {connectedDevice ? (
         <>
-            <Text>{heartRate}</Text>                    
+            {/* <Text>{heartRate}</Text>                     */}
             {/* <Text>Connected to Kettlefied!: Your Heart Rate Is:</Text>
             <Text> {heartRate} bpm</Text> */}
             <TouchableOpacity
             style={styles.taskbarButton}
             onPress={disconectFromDevice}
             >
-                <Ionicons name="md-bluetooth" size={32} />
+                <Ionicons name="md-stop-outline" size={32} />
             </TouchableOpacity>
         </>
         ) : (
@@ -99,6 +99,15 @@ export default function Taskbar() {
         )}
       </View>
 
+      
+      <TouchableOpacity
+        style={styles.taskbarButton}
+        onPress={() => navigation.navigate("AboutPage")}
+      >
+        <Ionicons name="md-settings" size={32} />
+      </TouchableOpacity>
+
+
       <DeviceModal
           closeModal={hideModal}
           visible={isModalVisible}
@@ -106,12 +115,6 @@ export default function Taskbar() {
           devices={allDevice}
       />
 
-      <TouchableOpacity
-        style={styles.taskbarButton}
-        onPress={() => navigation.navigate("AboutPage")}
-      >
-        <Ionicons name="md-settings" size={32} />
-      </TouchableOpacity>
 
 
 
