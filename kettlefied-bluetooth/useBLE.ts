@@ -2,8 +2,8 @@ import * as ExpoDevice from "expo-device"
 
 import base64 from "react-native-base64";
 
-const UUID = "0xFFE0";
-const CHARACTERISTIC = "0xFFE1";
+const UUID = "0000ffe0-0000-1000-8000-00805f9b34fb";
+const CHARACTERISTIC = "0000ffe1-0000-1000-8000-00805f9b34fb";
 
 import { useMemo, useState } from  "react";
 import { PermissionsAndroid, Platform } from "react-native";
@@ -131,24 +131,9 @@ function useBLE(): BluetoothLowEnergyApi {
                 console.log("No Data Recieved")
                 return
             }
-            console.log("data")
-            // DATA COLLECTION ---------------------------------------
-
-                const rawData = base64.decode(characteristic.value)
-                let innerHeartRate: number = -1;
-                console.log(rawData)
-                const firstbitVal: number = Number(rawData) & 0x01
-
-                if(firstbitVal === 0) {
-                    innerHeartRate = rawData[1].charCodeAt(0)
-                } else {
-                    innerHeartRate = 
-                    Number(rawData[1].charCodeAt(0) << 8) +
-                    Number(rawData[2].charCodeAt(2));
-                }
-
-                setHeartRate(innerHeartRate)
-            // DATA COLLECTION ---------------------------------------
+            
+            // Data Stored In this Variable
+            console.log("Value: " + base64.decode(characteristic.value))
 
     }
 
@@ -158,8 +143,8 @@ function useBLE(): BluetoothLowEnergyApi {
             console.log(device.name)
             console.log(device.id)
             device.monitorCharacteristicForService(
-                "0xFFE0",
-                "0xAAA0",
+                UUID,
+                CHARACTERISTIC,
                 onUpdate
             )
 
